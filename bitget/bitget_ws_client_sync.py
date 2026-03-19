@@ -93,17 +93,11 @@ class BitgetWsClientSync:
 
     def send_message(self, message):
         """Send a message through the WebSocket"""
-        op = None
         if isinstance(message, dict):
-            # Extract non-sensitive metadata for logging before serialization
-            op = message.get("op")
             message = json.dumps(message)
         if self.ws and self.connected:
             self.ws.send(message)
-            if op is not None:
-                logger.debug(f"Message sent (op={op}, length={len(message)})")
-            else:
-                logger.debug(f"Message sent (length={len(message)})")
+            logger.debug(f"Message sent (length={len(message)})")
         else:
             logger.error("Cannot send message - WebSocket not connected")
 
